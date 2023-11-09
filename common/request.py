@@ -4,7 +4,7 @@ import time
 import requests
 
 import common.fs as fs
-from logger import logger
+from common.logger import logger
 
 
 def check_exists(url):
