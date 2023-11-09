@@ -32,6 +32,58 @@ def check_exists(url):
     return status_code
 
 
+def get_json(url, params=None, **kwargs):
+    """
+    Sends a GET request, and return json.
+
+    :param url: URL for the new :class:`Request` object.
+    :param params: (optional) Dictionary, list of tuples or bytes to send
+        in the query string for the :class:`Request`.
+    :param \*\*kwargs: Optional arguments that ``request`` takes.
+    """
+    res = requests.get(url, params=params, **kwargs)
+    return res.json()
+
+
+def post_json(url, data=None, json=None, **kwargs):
+    """
+    Sends a POST request, and return json.
+
+    :param url: URL for the new :class:`Request` object.
+    :param data: (optional) Dictionary, list of tuples, bytes, or file-like
+        object to send in the body of the :class:`Request`.
+    :param json: (optional) A JSON serializable Python object to send in the body of the :class:`Request`.
+    """
+    res = requests.post(url, data=data, json=json, **kwargs)
+    return res.json()
+
+
+def get_text(url, params=None, **kwargs):
+    """
+    Sends a GET request, and return json.
+
+    :param url: URL for the new :class:`Request` object.
+    :param params: (optional) Dictionary, list of tuples or bytes to send
+        in the query string for the :class:`Request`.
+    :param \*\*kwargs: Optional arguments that ``request`` takes.
+    """
+    res = requests.get(url, params=params, **kwargs)
+    return res.text
+
+
+def post_text(url, data=None, json=None, **kwargs):
+    """
+    Sends a POST request, and return json.
+
+    :param url: URL for the new :class:`Request` object.
+    :param data: (optional) Dictionary, list of tuples, bytes, or file-like
+        object to send in the body of the :class:`Request`.
+    :param json: (optional) A JSON serializable Python object to send in the body of the :class:`Request`.
+    """
+    res = requests.post(url, data=data, json=json, **kwargs)
+    return res.text
+
+
 def download_file(url, filepath):  # 下载文件
     """下载文件
 
@@ -51,6 +103,7 @@ def download_file(url, filepath):  # 下载文件
 
     t1 = time.time()
     logger.info("Download completed. [{}] runs {:.2f} seconds.".format(url, t1 - t0))
+
 
 # download_file(
 #     "https://fileimosscdn.lejiaolexue.com/dmres/1/15d38b3b6de83b03a9c8c4b744a29564.pptx",
