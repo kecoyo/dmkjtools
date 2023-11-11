@@ -62,10 +62,9 @@ class Task:
     # 开始运行
     def start(self):
         start_time = time()  # 开始时间
-        self.read_data()
+        self.list = self.read_data()
         self.process()
-        self.write_data()
-        self.completed()
+        self.write_data(self.list)
         end_time = time()  # 结束时间
 
         logger.info(
@@ -74,10 +73,10 @@ class Task:
 
     # 读数据
     def read_data(self):
-        pass
+        return []
 
     # 写数据
-    def write_data(self):
+    def write_data(self, list):
         pass
 
     # 处理整个过程
@@ -98,10 +97,6 @@ class Task:
     def process_row(self, row):
         pass
 
-    # 全部处理完成后执行的函数
-    def completed(self):
-        pass
-
 
 class CsvTask(Task):
     # 输入csv文件路径
@@ -112,7 +107,7 @@ class CsvTask(Task):
         if self.input == "":
             self.input = sys.argv[0].replace(".py", ".csv")
 
-        self.list = read_csv(self.input)
+        return read_csv(self.input)
 
-    def write_data(self):
-        write_csv(self.input, self.list)
+    def write_data(self, list):
+        write_csv(self.input, list)
