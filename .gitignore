@@ -1,6 +1,7 @@
 .idea
 __pycache__
 .pytest_cache
-.env
 output/
 venv/
+.env
+config.cfg
