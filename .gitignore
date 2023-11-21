@@ -4,5 +4,5 @@ __pycache__
 output/
 tmp/
 venv/
-.env
+.env*
 config.cfg

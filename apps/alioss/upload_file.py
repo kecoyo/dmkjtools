@@ -12,7 +12,7 @@ import common.fs as fs
 
 
 local_dir = "tmp\\alioss\\"  # 本地文件夹
-oss_dir = "app_res/activity/bbbbbbbb/"  # OSS文件夹
+oss_dir = "app_res/activity/cccccccc/"  # OSS文件夹
 
 
 # OSS客户端
@@ -32,6 +32,7 @@ class ProcessTask(Task):
 
     def process_row(self, row):
         print(row)
+
         # 上传文件
         oss_client.put_file(row["key"], row["path"])
 

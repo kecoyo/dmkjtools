@@ -6,7 +6,7 @@ import common.fs as fs
 from pathlib import Path
 
 """
-列出指定目录下的所有文件
+列出OSS存储桶
 """
 
 

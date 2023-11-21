@@ -7,11 +7,11 @@ from common.task import Task
 import common.fs as fs
 
 """
-下载OSS文件到本地
+删除OSS文件
 """
 
 local_dir = "tmp\\alioss\\"  # 本地文件夹
-oss_dir = "app_res/activity/bbbbbbbb/"  # OSS文件夹
+oss_dir = "app_res/activity/cccccccc/"  # OSS文件夹
 
 
 # OSS客户端
@@ -21,20 +21,13 @@ oss_client = OssClient(os.getenv("OSS_ENDPOINT"), "file-im")
 class ProcessTask(Task):
     def read_list(self):
         list = oss_client.list_object(prefix=oss_dir, max_keys=1000)
-        return [
-            {
-                "key": item.key,
-                "path": local_dir + item.key.replace(oss_dir, "", 1).replace("/", os.sep),
-            }
-            for item in list
-            if not item.key.endswith("/")
-        ]
+        return [{"key": item.key} for item in list]
 
     def process_row(self, row):
         print(row)
 
-        # 下载文件
-        oss_client.download_file(row["key"], row["path"])
+        # 删除OSS文件
+        oss_client.delete_object(row["key"])
 
     def write_list(self, list):
         path = Path(__file__)

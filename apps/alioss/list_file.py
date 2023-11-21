@@ -6,10 +6,10 @@ from common.task import Task
 import common.fs as fs
 
 """
-列出指定目录下的所有文件
+列出OSS文件
 """
 
-oss_dir = "app_res/activity/bbbbbbbb/"  # OSS文件夹
+oss_dir = "app_res/activity/cccccccc/"  # OSS文件夹
 
 
 # OSS客户端
@@ -19,7 +19,7 @@ oss_client = OssClient(os.getenv("OSS_ENDPOINT"), "file-im")
 class ProcessTask(Task):
     def read_list(self):
         list = oss_client.list_object(prefix=oss_dir, max_keys=1000)
-        return [{"key": item.key} for item in list if not item.key.endswith("/")]
+        return [{"key": item.key} for item in list]
 
     def process_row(self, row):
         print(row)
