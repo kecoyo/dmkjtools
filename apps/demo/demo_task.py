@@ -9,10 +9,8 @@ from common.task import Task
 
 
 class DemoTask(Task):
-    def read_data(self):
-        self.list = read_csv(
-            os.path.join(os.path.dirname(__file__), "demo_csv_task.csv")
-        )
+    def read_list(self):
+        return read_csv(os.path.join(os.path.dirname(__file__), "demo_csv_task.csv"))
 
     def process_row(self, row):
         logger.info(row)

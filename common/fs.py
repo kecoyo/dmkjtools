@@ -89,12 +89,26 @@ def get_file_size(file):  # 获取文件大小
     return stats.st_size
 
 
-def readdir(path):  # 读目录
-    list = os.listdir(path)
-    return list
+def readdir(dir, pattern="*.*"):  # 读目录
+    """
+    读目录
+
+    :param dir: 目录
+    :param pattern: 匹配模式，如 *.jpg, *.*, */, 默认为 *.*
+    :return: 文件或目录列表
+    """
+    files = [file for file in Path(dir).glob(pattern)]
+    return files
 
 
 def readdirp(dir, pattern="*.*"):  # 读目录
+    """
+    递归读取目录
+
+    :param dir: 目录
+    :param pattern: 匹配模式，如 *.jpg, *.*, */, 默认为 *.*
+    :return: 文件或目录列表
+    """
     files = [file for file in Path(dir).rglob(pattern)]
     return files
 

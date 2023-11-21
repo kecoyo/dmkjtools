@@ -10,7 +10,8 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from pytz import utc
 
 from common.fs import read_csv, write_csv
-from common.logger import logger
+
+# from common.logger import logger
 
 
 class Task:
@@ -62,21 +63,21 @@ class Task:
     # 开始运行
     def start(self):
         start_time = time()  # 开始时间
-        self.list = self.read_data()
+        self.list = self.read_list()
         self.process()
-        self.write_data(self.list)
+        self.write_list(self.list)
         end_time = time()  # 结束时间
 
-        logger.info(
+        print(
             f"执行完成。成功: {self.success}, 失败: {self.fail}, 用时：{round(end_time - start_time, 3)}s"
         )
 
     # 读数据
-    def read_data(self):
+    def read_list(self):
         return []
 
     # 写数据
-    def write_data(self, list):
+    def write_list(self, list):
         pass
 
     # 处理整个过程
@@ -102,12 +103,12 @@ class CsvTask(Task):
     # 输入csv文件路径
     input = ""
 
-    def read_data(self):
+    def read_list(self):
         # 默认csv文件和py文件同名
         if self.input == "":
             self.input = sys.argv[0].replace(".py", ".csv")
 
         return read_csv(self.input)
 
-    def write_data(self, list):
+    def write_list(self, list):
         write_csv(self.input, list)

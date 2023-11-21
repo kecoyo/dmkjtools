@@ -12,8 +12,16 @@ class OssClient:
         self.auth = oss2.ProviderAuth(EnvironmentVariableCredentialsProvider())
 
         # 填写Bucket所在地域对应的Endpoint。以华东1（杭州）为例，Endpoint填写为https://oss-cn-hangzhou.aliyuncs.com。
+        self.service = oss2.Service(self.auth, endpoint)
+
         # 填写Bucket名称，例如examplebucket。
         self.bucket = oss2.Bucket(self.auth, endpoint, bucket_name, **kwargs)
+
+    def list_bucket(self):
+        """
+        列出所有的Bucket
+        """
+        return list(oss2.BucketIterator(self.service))
 
     def object_exists(self, key, **kwargs):
         """
