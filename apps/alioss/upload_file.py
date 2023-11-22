@@ -1,31 +1,30 @@
 import os
 from pathlib import Path
-from PIL import Image
+from common.fs import readdirp, write_csv
 from common.oss_client import OssClient
-from common.request import download_file
 from common.task import Task
-import common.fs as fs
 
 """
 上传文件到阿里云OSS
 """
 
 
-local_dir = "tmp\\alioss\\"  # 本地文件夹
-oss_dir = "app_res/activity/cccccccc/"  # OSS文件夹
-
+work_dir = os.getenv("ALIOSS_WORK_DIR")  # 工作目录
+local_dir = os.getenv("ALIOSS_LOCAL_DIR")  # 本地文件夹
+oss_dir = os.getenv("ALIOSS_OSS_DIR")  # OSS文件夹
+max_keys = os.getenv("ALIOSS_MAX_KEYS")  # 最大数量
 
 # OSS客户端
-oss_client = OssClient(os.getenv("OSS_ENDPOINT"), "file-im")
+oss_client = OssClient(os.getenv("OSS_ENDPOINT"), os.getenv("OSS_BUCKET"))
 
 
 class ProcessTask(Task):
     def read_list(self):
-        list = fs.readdirp(local_dir)
+        list = readdirp(local_dir)
         return [
             {
-                "key": oss_dir + str(item).replace(local_dir, "").replace(os.sep, "/"),
                 "path": str(item),
+                "key": oss_dir + str(item).replace(local_dir, "").replace(os.sep, "/"),
             }
             for item in list
         ]
@@ -38,8 +37,7 @@ class ProcessTask(Task):
 
     def write_list(self, list):
         path = Path(__file__)
-        output = path.parent.joinpath(path.stem + ".csv")
-        fs.write_csv(output, list)
+        write_csv(os.path.join(work_dir, path.stem + ".csv"), list)
 
 
 process = ProcessTask(max_workers=1)

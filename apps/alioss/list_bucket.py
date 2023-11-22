@@ -1,17 +1,20 @@
 import os
-from PIL import Image
+from pathlib import Path
+from common.fs import write_csv
 from common.oss_client import OssClient
 from common.task import Task
-import common.fs as fs
-from pathlib import Path
 
 """
 列出OSS存储桶
 """
 
+work_dir = os.getenv("ALIOSS_WORK_DIR")  # 工作目录
+local_dir = os.getenv("ALIOSS_LOCAL_DIR")  # 本地文件夹
+oss_dir = os.getenv("ALIOSS_OSS_DIR")  # OSS文件夹
+max_keys = os.getenv("ALIOSS_MAX_KEYS")  # 最大数量
 
 # OSS客户端
-oss_client = OssClient(os.getenv("OSS_ENDPOINT"), "file-im")
+oss_client = OssClient(os.getenv("OSS_ENDPOINT"), os.getenv("OSS_BUCKET"))
 
 
 class ProcessTask(Task):
@@ -24,8 +27,7 @@ class ProcessTask(Task):
 
     def write_list(self, list):
         path = Path(__file__)
-        output = path.parent.joinpath(path.stem + ".csv")
-        fs.write_csv(output, list)
+        write_csv(work_dir + path.stem + ".csv", list)
 
 
 process = ProcessTask(max_workers=1)
