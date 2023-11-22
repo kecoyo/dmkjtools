@@ -21,7 +21,7 @@ def exists_dir(path):  # 判断目录是否存在
 
 
 def create_dir(name):  # 创建目录
-    if not os.path.exists(name):
+    if name and not os.path.exists(name):
         # 使用 os.mkdir 创建目录，如果父目录不存在，报错；
         # 如果目录已经存在了，报错。
         # os.mkdir(name)
@@ -31,7 +31,7 @@ def create_dir(name):  # 创建目录
 
 
 def ensure_dir(name):  # 确保目录存在
-    if not os.path.exists(name):
+    if name and not os.path.exists(name):
         # 使用 os.mkdir 创建目录，如果父目录不存在，报错；
         # 如果目录已经存在了，报错。
         # os.mkdir(name)
