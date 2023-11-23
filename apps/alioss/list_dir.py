@@ -1,5 +1,5 @@
 """
-列出OSS存储桶
+列出OSS文件
 """
 
 import os
@@ -13,12 +13,16 @@ from common.task import Task
 os.chdir("tmp\\alioss\\")
 
 
+OSS_DIR = "app_res/activity/aaaaaaaa/"  # OSS文件夹
+MAX_KEYS = 1000  # 最大数量
+
+
 class ProcessTask(Task):
     """处理任务"""
 
     def read_list(self):
-        buckets = [{"name": item.name} for item in oss_client.list_bucket()]
-        return buckets
+        data = oss_client.list_object(prefix=OSS_DIR, max_keys=MAX_KEYS)
+        return [{"key": item.key} for item in data]
 
     def process_row(self, row):
         print(row)

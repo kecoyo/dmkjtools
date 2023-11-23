@@ -51,9 +51,9 @@ class ProcessTask(Task):
 
         print(row)
 
-    def write_list(self, list):
+    def write_list(self):
         path = Path(__file__)
-        write_csv(path.stem + ".csv", list)
+        write_csv(path.stem + ".csv", self.list)
 
 
 process = ProcessTask(max_workers=1)

@@ -1,12 +1,16 @@
+"""
+阿里云OSS客户端
+"""
 import os
-
 import oss2
 from oss2.credentials import EnvironmentVariableCredentialsProvider
 
-import common.fs as fs
+from common.fs import ensure_dir
 
 
 class OssClient:
+    """阿里云OSS客户端"""
+
     def __init__(self, endpoint, bucket_name, **kwargs) -> None:
         # 使用环境变量中获取的RAM用户的访问密钥配置访问凭证。
         self.auth = oss2.ProviderAuth(EnvironmentVariableCredentialsProvider())
@@ -106,7 +110,7 @@ class OssClient:
 
         :return: 如果文件不存在，则抛出 :class:`NoSuchKey <oss2.exceptions.NoSuchKey>` ；还可能抛出其他异常
         """
-        fs.ensure_dir(os.path.dirname(filename))
+        ensure_dir(os.path.dirname(filename))
         ret = self.bucket.get_object_to_file(key, filename, **kwargs)
         return ret.status
 
@@ -131,9 +135,7 @@ class OssClient:
         # # headers = {'x-oss-storage-class': oss2.BUCKET_STORAGE_CLASS_IA}
         oss2.BUCKET_STORAGE_CLASS_IA
 
-        ret = self.bucket.copy_object(
-            source_bucket_name, source_key, target_key, **kwargs
-        )
+        ret = self.bucket.copy_object(source_bucket_name, source_key, target_key, **kwargs)
         return ret.status
 
     def archive_object(self, key):
@@ -143,9 +145,7 @@ class OssClient:
         :param str key: object name
         """
         headers = {"x-oss-storage-class": oss2.BUCKET_STORAGE_CLASS_ARCHIVE}
-        ret = self.bucket.copy_object(
-            self.bucket.bucket_name, key, key, headers=headers
-        )
+        ret = self.bucket.copy_object(self.bucket.bucket_name, key, key, headers=headers)
         return ret.status
 
     def restore_object(self, key, **kwargs):
@@ -156,3 +156,7 @@ class OssClient:
         """
         ret = self.bucket.restore_object(key, **kwargs)
         return ret.status
+
+
+# 默认OSS客户端
+oss_client = OssClient(os.getenv("OSS_ENDPOINT"), os.getenv("OSS_BUCKET"))
