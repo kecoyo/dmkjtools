@@ -1,23 +1,27 @@
-import os
-
-from PIL import Image, ImageDraw, ImageFont
-
-from common.logger import logger
-from common.pillow import wrap_texts
-from common.task import CsvTask
-
 """
 批量生成活动证书
 """
 
+import os
+from PIL import Image, ImageDraw, ImageFont
+from common.fs import ensure_dir
+from common.pillow import wrap_texts
+from common.task import CsvTask
 
-class BuildCertTask(CsvTask):
-    # csv文件路径
-    input = os.path.join(os.path.dirname(__file__), "data.csv")
 
-    # 任务处理方法
+# 切换到工作目录
+# os.chdir(sys.path[0])
+os.chdir(os.path.dirname(__file__))
+
+INPUT_FILE = "data_03.csv"  # 输入文件, 格式: key
+OUTPUT_DIR = "images\\"  # 输出目录
+
+
+class ProcessTask(CsvTask):
+    """生成证书的处理任务的类"""
+
     def process_row(self, row):
-        logger.info(row)
+        print(row)
 
         # 创建一个白色背景的空白图像
         img = Image.new("RGB", (3509, 2482), color="white")
@@ -43,14 +47,12 @@ class BuildCertTask(CsvTask):
         texts = [
             f"{row['school']} {row['name']}：",
             f"    你在中国教育技术协会中小学专业委员会主办的2023智慧教育应用成果征集与推荐展示活动中，提交的{row['title']}",
-            f"    特发此证。",
+            "    特发此证。",
         ]
         lines = wrap_texts(texts, draw, font, max_width=2743)
         text = "\n".join(lines)
         text_position = (376, 988)
-        draw.multiline_text(
-            text_position, text, font=font, fill=text_color, spacing=spacing
-        )
+        draw.multiline_text(text_position, text, font=font, fill=text_color, spacing=spacing)
 
         # 写文本：中国教育技术协会
         text = "中国教育技术协会\n中小学专业委员会\n2023年10月"
@@ -64,10 +66,12 @@ class BuildCertTask(CsvTask):
             spacing=spacing,
         )
 
+        # 确保输出目录存在
+        ensure_dir(OUTPUT_DIR)
+
         # 保存图像到文件
-        save_path = os.path.join("D:/activity_certs/imgs", row["cert_no"] + ".png")
-        img.save(save_path)
+        img.save(OUTPUT_DIR + row["cert_no"] + ".png")
 
 
-process = BuildCertTask(max_workers=4)
+process = ProcessTask(INPUT_FILE, max_workers=1)
 process.start()
