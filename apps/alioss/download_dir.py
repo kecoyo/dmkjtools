@@ -10,10 +10,10 @@ from common.task import Task
 
 
 # 切换到工作目录
-os.chdir("tmp\\alioss\\")
+os.chdir(os.path.dirname(__file__))
 
 OSS_DIR = "app_res/activity/aaaaaaaa/"  # 下载的OSS文件夹
-LOCAL_DIR = "aaaaaaaa\\"  # 保存的本地文件夹
+LOCAL_DIR = "files\\"  # 保存的本地文件夹
 MAX_KEYS = 1000  # 最大数量
 
 
@@ -25,7 +25,7 @@ class ProcessTask(Task):
         return [
             {
                 "key": item.key,
-                "save_path": LOCAL_DIR + item.key.replace(OSS_DIR, "", 1).replace("/", os.sep),
+                "path": LOCAL_DIR + item.key.replace(OSS_DIR, "", 1).replace("/", os.sep),
             }
             for item in objects
             if not item.key.endswith("/")
@@ -35,7 +35,13 @@ class ProcessTask(Task):
         print(row)
 
         # 下载文件
-        oss_client.download_file(row["key"], row["save_path"])
+        try:
+            oss_client.download_file(row["key"], row["path"])
+            row["status"] = "success"
+        except Exception as e:
+            row["status"] = "failed"
+            row["error"] = str(e)
+            raise e
 
     def write_list(self):
         path = Path(__file__)

@@ -10,7 +10,7 @@ from common.task import Task
 
 
 # 切换到工作目录
-os.chdir("tmp\\alioss\\")
+os.chdir(os.path.dirname(__file__))
 
 
 class ProcessTask(Task):

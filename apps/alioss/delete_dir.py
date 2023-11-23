@@ -10,7 +10,7 @@ from common.task import Task
 
 
 # 切换到工作目录
-os.chdir("tmp\\alioss\\")
+os.chdir(os.path.dirname(__file__))
 
 OSS_DIR = "app_res/activity/aaaaaaaa/"  # 要删除的OSS目录
 MAX_KEYS = 1000  # 最大数量

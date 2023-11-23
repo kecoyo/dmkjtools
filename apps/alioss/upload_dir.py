@@ -10,10 +10,10 @@ from common.task import Task
 
 
 # 切换到工作目录
-os.chdir("tmp\\alioss\\")
+os.chdir(os.path.dirname(__file__))
 
-LOCAL_DIR = "aaaaaaaa\\"  # 本地要上传的目录
 OSS_DIR = "app_res/activity/aaaaaaaa/"  # 要保存的OSS目录
+LOCAL_DIR = "files\\"  # 本地要上传的目录
 
 
 class ProcessTask(Task):
@@ -23,8 +23,8 @@ class ProcessTask(Task):
         files = readdirp(LOCAL_DIR)
         return [
             {
-                "path": str(item),
                 "key": OSS_DIR + str(item).replace(LOCAL_DIR, "").replace(os.sep, "/"),
+                "path": str(item),
             }
             for item in files
         ]

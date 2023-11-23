@@ -8,9 +8,9 @@ from common.task import CsvTask
 
 
 # 切换到工作目录
-os.chdir("tmp\\alioss\\")
+os.chdir(os.path.dirname(__file__))
 
-INPUT_FILE = "upload_file.csv"  # 输入文件, 格式：path, key
+INPUT_FILE = "upload_file.csv"  # 输入文件, 格式：key, path
 
 
 class ProcessTask(CsvTask):
@@ -19,8 +19,6 @@ class ProcessTask(CsvTask):
     def process_row(self, row):
         # 上传文件
         oss_client.put_file(row["key"], row["path"])
-
-        row["status"] = "ok"
 
         print(row)
 

@@ -1,5 +1,5 @@
 """
-列出OSS文件
+列出OSS目录下的文件
 """
 
 import os
@@ -10,10 +10,9 @@ from common.task import Task
 
 
 # 切换到工作目录
-os.chdir("tmp\\alioss\\")
+os.chdir(os.path.dirname(__file__))
 
-
-OSS_DIR = "app_res/activity/aaaaaaaa/"  # OSS文件夹
+OSS_DIR = "app_res/activity/aaaaaaaa/"  # OSS目录
 MAX_KEYS = 1000  # 最大数量
 
 

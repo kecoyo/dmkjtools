@@ -1,5 +1,5 @@
 """
-下载OSS文件到本地
+OSS文件是否存在
 """
 
 import os
@@ -10,7 +10,7 @@ from common.task import CsvTask
 # 切换到工作目录
 os.chdir(os.path.dirname(__file__))
 
-INPUT_FILE = "download_file.csv"  # 输入文件，格式：key, path
+INPUT_FILE = "exists_file.csv"  # 输入文件，格式：key
 
 
 class ProcessTask(CsvTask):
@@ -21,8 +21,8 @@ class ProcessTask(CsvTask):
 
         # 下载文件
         try:
-            oss_client.download_file(row["key"], row["path"])
-            row["status"] = "success"
+            exists = oss_client.object_exists(row["key"])
+            row["status"] = exists
             row["error"] = ""
         except Exception as e:
             row["status"] = "failed"
