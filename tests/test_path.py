@@ -1,4 +1,5 @@
 import os
+import sys
 import unittest
 from pathlib import Path
 
@@ -25,3 +26,8 @@ class TestPath(unittest.TestCase):
     def test_basepath(self):
         basepath = os.path.abspath(os.path.dirname(__file__))  # 当前模块文件的根目录
         self.assertEqual(basepath, f"d:\\PythonProjects\\dmkjtools\\tests")
+
+    def test_cur_path(self):
+        cur_path1 = os.path.dirname(__file__)
+        cur_path2 = sys.path[0]
+        self.assertEqual(cur_path1, cur_path2)
