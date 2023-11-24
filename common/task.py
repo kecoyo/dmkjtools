@@ -1,17 +1,16 @@
-import os
-import sys
-from time import time
+"""
+批处理执行任务基类
+"""
 
+import math
+from time import time
 from abc import ABCMeta, abstractmethod
 from apscheduler.events import EVENT_JOB_EXECUTED, EVENT_JOB_ERROR
 from apscheduler.executors.pool import ThreadPoolExecutor
 from apscheduler.jobstores.memory import MemoryJobStore
 from apscheduler.schedulers.blocking import BlockingScheduler
 from pytz import utc
-
 from common.fs import read_csv, write_csv
-
-# from common.logger import logger
 
 
 class Task:
@@ -164,3 +163,23 @@ class CsvTask(Task):
         Returns:
             None
         """
+
+    def is_empty(self, value):
+        """
+        判断值是否为空。
+
+        Args:
+            value: The value to be checked.
+
+        Returns:
+            bool: True if the value is empty, False otherwise.
+        """
+        # 判断value是nan，返回False
+        if isinstance(value, float) and math.isnan(value):
+            return True
+
+        # 判断value是None或空字符串，返回True
+        if value is None or value == "":
+            return True
+
+        return False
