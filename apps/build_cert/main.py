@@ -73,5 +73,6 @@ class ProcessTask(CsvTask):
         img.save(OUTPUT_DIR + row["cert_no"] + ".png")
 
 
-process = ProcessTask(INPUT_FILE, max_workers=1)
-process.start()
+if __name__ == "__main__":
+    process = ProcessTask(INPUT_FILE, max_workers=1)
+    process.start()
