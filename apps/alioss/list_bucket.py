@@ -27,6 +27,6 @@ class ProcessTask(Task):
         path = Path(__file__)
         write_csv(path.stem + ".csv", self.list)
 
-
-process = ProcessTask(max_workers=1)
-process.start()
+if __name__ == "__main__":
+    process = ProcessTask(max_workers=1)
+    process.start()

@@ -30,5 +30,6 @@ class ProcessTask(CsvTask):
             raise e
 
 
-process = ProcessTask(INPUT_FILE, max_workers=1)
-process.start()
+if __name__ == "__main__":
+    process = ProcessTask(INPUT_FILE, max_workers=1)
+    process.start()

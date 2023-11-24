@@ -12,8 +12,8 @@ from common.task import Task
 # 切换到工作目录
 os.chdir(os.path.dirname(__file__))
 
-OSS_DIR = "app_res/activity/aaaaaaaa/"  # 下载的OSS文件夹
-LOCAL_DIR = "files\\"  # 保存的本地文件夹
+OSS_DIR = "app_res/activity/cccccccc/"  # 下载的OSS文件夹
+LOCAL_DIR = "download\\"  # 保存的本地文件夹
 MAX_KEYS = 1000  # 最大数量
 
 
@@ -48,5 +48,6 @@ class ProcessTask(Task):
         write_csv(path.stem + ".csv", self.list)
 
 
-process = ProcessTask(max_workers=1)
-process.start()
+if __name__ == "__main__":
+    process = ProcessTask(max_workers=1)
+    process.start()

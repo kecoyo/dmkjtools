@@ -3,6 +3,7 @@
 """
 
 import os
+import oss2
 from common.oss_client import oss_client
 from common.task import CsvTask
 
@@ -24,13 +25,19 @@ class ProcessTask(CsvTask):
             oss_client.download_file(row["key"], row["path"])
             # 删除OSS文件
             oss_client.delete_object(row["key"])
+
             row["status"] = "success"
             row["error"] = ""
+        except oss2.exceptions.OssError as e:
+            row["status"] = e.status
+            row["error"] = e.message
+            raise e
         except Exception as e:
             row["status"] = "failed"
             row["error"] = str(e)
             raise e
 
 
-process = ProcessTask(INPUT_FILE, max_workers=1)
-process.start()
+if __name__ == "__main__":
+    process = ProcessTask(INPUT_FILE, max_workers=1)
+    process.start()

@@ -12,7 +12,7 @@ from common.task import Task
 # 切换到工作目录
 os.chdir(os.path.dirname(__file__))
 
-OSS_DIR = "app_res/activity/aaaaaaaa/"  # 要删除的OSS目录
+OSS_DIR = "app_res/activity/cccccccc/"  # 要删除的OSS目录
 MAX_KEYS = 1000  # 最大数量
 
 
@@ -34,5 +34,6 @@ class ProcessTask(Task):
         write_csv(path.stem + ".csv", self.list)
 
 
-process = ProcessTask(max_workers=1)
-process.start()
+if __name__ == "__main__":
+    process = ProcessTask(max_workers=1)
+    process.start()

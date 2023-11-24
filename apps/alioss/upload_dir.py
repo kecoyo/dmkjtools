@@ -13,7 +13,7 @@ from common.task import Task
 os.chdir(os.path.dirname(__file__))
 
 OSS_DIR = "app_res/activity/aaaaaaaa/"  # 要保存的OSS目录
-LOCAL_DIR = "files\\"  # 本地要上传的目录
+LOCAL_DIR = "upload\\"  # 本地要上传的目录
 
 
 class ProcessTask(Task):
@@ -40,5 +40,6 @@ class ProcessTask(Task):
         write_csv(path.stem + ".csv", self.list)
 
 
-process = ProcessTask(max_workers=1)
-process.start()
+if __name__ == "__main__":
+    process = ProcessTask(max_workers=1)
+    process.start()

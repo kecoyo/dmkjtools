@@ -18,10 +18,18 @@ class ProcessTask(CsvTask):
 
     def process_row(self, row):
         # 上传文件
-        oss_client.put_file(row["key"], row["path"])
+        try:
+            oss_client.put_file(row["key"], row["path"])
+            row["status"] = "success"
+            row["error"] = ""
+        except Exception as e:
+            row["status"] = "failed"
+            row["error"] = str(e)
+            raise e
 
         print(row)
 
 
-process = ProcessTask(INPUT_FILE, max_workers=1)
-process.start()
+if __name__ == "__main__":
+    process = ProcessTask(INPUT_FILE, max_workers=1)
+    process.start()

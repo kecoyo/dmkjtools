@@ -23,5 +23,6 @@ class ProcessTask(CsvTask):
         oss_client.delete_object(row["key"])
 
 
-process = ProcessTask(INPUT_FILE, max_workers=1)
-process.start()
+if __name__ == "__main__":
+    process = ProcessTask(INPUT_FILE, max_workers=1)
+    process.start()
